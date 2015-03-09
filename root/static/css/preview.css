@@ -1,0 +1,95 @@
+body {
+	margin: 0px; padding: 0px;
+	font-family: 'Open Sans', sans-serif !important;
+}
+
+#previewWrapper {
+	width: 800px;
+}
+
+.top {
+	background: url('/static/images/header.png') no-repeat top right;
+	background-size: 100% auto;
+	height: 140px;	
+}
+
+.bottom {
+	background: url('/static/images/footer.png') no-repeat bottom left;
+	background-size: 100% auto;
+	height: 60px;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+}
+
+.piece {
+	overflow: hidden;
+	width: 800px;
+	height: 1035px;
+	position: relative;
+}
+
+.images p {
+	margin-top: 0px;
+	margin-bottom: 10px;
+}
+
+.images img {
+	max-width: 100px;
+	max-height: 100px;
+}
+
+.main, .images {
+	vertical-align: top;
+}
+
+.images {
+	width: 130px;
+	text-align: right;
+}
+
+.piece table, .piece h1, .piece h2, .piece h3 {
+	padding: 0px 40px;
+}
+
+.piece table {
+	padding-top: 25px;
+}
+
+h1 {
+	color: #4A9CD1;
+	text-transform: uppercase;
+	margin: 0px;
+	font-weight: 700;
+	line-height: 30px;
+}
+
+h2 {
+	text-transform: uppercase;
+	margin: 0px;
+	font-weight: 600;
+	line-height: 28px;
+}
+
+h3 {
+	margin: 0px;
+	font-size: 1.5em;
+	font-weight: 600;
+	line-height: 28px;
+}
+
+td, p, span {
+	font-size: 15px !important;
+	line-height: 20px !important;
+	font-weight: 300;
+}
+
+ul {
+	margin-left: 0px;
+	padding-left: 18px;
+}
+
+.piece.second h1, .piece.second h2, .piece.second h3 {
+	color: #C7C8CA;
+}

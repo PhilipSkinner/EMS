@@ -1,0 +1,1 @@
+./script/ems_create.pl model DB DBIC::Schema DB::Schema create=static dbi:mysql:ems 'ems' 'ems' '{ AutoCommit => 1 }'

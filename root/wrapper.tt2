@@ -1,0 +1,5 @@
+[% INCLUDE header.tt2 %]
+
+[% content %]
+
+[% INCLUDE footer.tt2 %]

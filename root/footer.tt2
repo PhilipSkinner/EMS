@@ -1,0 +1,19 @@
+	<div id="footer">
+		<div class="container">
+			<p class="text-muted pull-right">
+				Powered by xxx
+			</p>
+		
+			<p class="text-muted">
+				&copy; 2014 Standard
+			</p>			
+		</div>
+	</div>
+
+	<script>
+		$(document).ready(function() {
+			$(document).tooltip();
+		});
+	</script>
+</body>
+</html>

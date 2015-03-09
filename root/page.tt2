@@ -1,0 +1,9 @@
+[% WRAPPER wrapper.tt2 %]
+
+[% firstSection = page.sections %]
+
+[% FOREACH block = firstSection.blocks %]
+	[% block.getContent() %]
+[% END %]
+
+[% END %]
