@@ -21,6 +21,15 @@ use Catalyst qw/
     -Debug
     ConfigLoader
     Static::Simple
+    
+    Authentication
+    Authentication::Store::DBIC
+    Authentication::Credential::Password
+    Authorization::Roles
+    
+    Session
+    Session::Store::DBIC
+    Session::State::Cookie
 /;
 
 extends 'Catalyst';
@@ -40,7 +49,30 @@ __PACKAGE__->config(
     name => 'EMS',
     # Disable deprecated behavior needed by old applications
     disable_component_resolution_regex_fallback => 1,
-    enable_catalyst_header => 1, # Send X-Catalyst header
+    enable_catalyst_header 			=> 1, # Send X-Catalyst header
+    default_view 				=> 'Template',
+    authentication => {
+        dbic => {
+            user_class 				=> 'DB::User',
+            user_field 				=> 'username',
+            password_field 			=> 'password',
+            password_type 			=> 'SHA-2',
+        }
+    },
+    'Plugin::Session' => {
+        dbic_class 				=> 'DB::Session',
+        expires 				=> 36000,
+    },
+    authorization => {
+        dbic => {
+            role_class 				=> 'DB::Role',
+            role_field 				=> 'role',
+            role_rel 				=> 'user_role',
+            user_role_user_field 		=> 'user',
+            user_role_class 			=> 'DB::UserRole',
+            user_role_role_field 		=> 'role',
+        }
+    },
 );
 
 # Start the application
