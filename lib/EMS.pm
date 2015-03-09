@@ -4,6 +4,7 @@ use namespace::autoclean;
 
 use Catalyst::Runtime 5.80;
 use EMS::Factory::Page;
+use EMS::JSON;
 
 # Set flags and add plugins for the application.
 #
@@ -56,7 +57,8 @@ __PACKAGE__->config(
             user_class 				=> 'DB::User',
             user_field 				=> 'username',
             password_field 			=> 'password',
-            password_type 			=> 'SHA-2',
+            password_type 			=> 'hashed',
+            password_hash_type			=> 'SHA-512',
         }
     },
     'Plugin::Session' => {
@@ -113,8 +115,33 @@ sub getPage {
     if (!$self->{pageFactory}) {
         $self->{pageFactory} = EMS::Factory::Page->new();
     }
-        
+    
     return $self->{pageFactory}->loadPage($self->model('DB::Page')->find({ uid => $id }));
+}
+
+sub generatePassword {
+    my $self = shift;
+    my $clear = shift;
+
+    my $conf = $self->_config->{'authentication'}{'dbic'};
+    my $d = Digest->new( $conf->{'password_hash_type'} );
+    $d->add($conf->{'password_pre_salt'} || '' );
+    $d->add($clear);
+    $d->add($conf->{'password_post_salt'} || '' );
+
+    my $computed = $d->clone()->b64digest;
+
+    return $computed;
+}
+
+sub json {
+    my $self = shift;
+    
+    if (!$self->{json}) {
+        $self->{json} = EMS::JSON->new(c => $self);
+    }
+    
+    return $self->{json};
 }
 
 1;
