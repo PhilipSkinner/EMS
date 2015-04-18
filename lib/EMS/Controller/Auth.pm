@@ -38,9 +38,19 @@ sub login :Local :Args(0) {
     }
     
     if ($c->login($username, $password)) {
+        if ($c->request->params->{redirect}) {
+            $c->response->redirect($c->request->params->{redirect});
+            return;
+        }
+        
         $c->json->payload({ status => 1 });
         return;
     } else {
+        if ($c->request->params->{onerror}) {
+            $c->response->redirect($c->request->params->{onerror});
+            return;
+        }
+    
         $c->json->error('Incorrect details', '401');
         return;
     }        

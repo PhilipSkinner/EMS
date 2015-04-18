@@ -50,16 +50,10 @@ __PACKAGE__->table("page");
   is_nullable: 0
   size: 255
 
-=head2 template
-
-  data_type: 'varchar'
-  is_nullable: 0
-  size: 255
-
 =head2 type
 
   data_type: 'varchar'
-  default_value: 'EMS::Objects::Page'
+  default_value: 'EMS::Descriptors::Page'
   is_nullable: 1
   size: 255
 
@@ -70,6 +64,13 @@ __PACKAGE__->table("page");
   extra: {list => ["active","hidden","deleted"]}
   is_nullable: 0
 
+=head2 parent
+
+  data_type: 'integer'
+  default_value: 1
+  is_foreign_key: 1
+  is_nullable: 0
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -77,12 +78,10 @@ __PACKAGE__->add_columns(
   { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
   "name",
   { data_type => "varchar", is_nullable => 0, size => 255 },
-  "template",
-  { data_type => "varchar", is_nullable => 0, size => 255 },
   "type",
   {
     data_type => "varchar",
-    default_value => "EMS::Objects::Page",
+    default_value => "EMS::Descriptors::Page",
     is_nullable => 1,
     size => 255,
   },
@@ -92,6 +91,13 @@ __PACKAGE__->add_columns(
     default_value => "active",
     extra => { list => ["active", "hidden", "deleted"] },
     is_nullable => 0,
+  },
+  "parent",
+  {
+    data_type      => "integer",
+    default_value  => 1,
+    is_foreign_key => 1,
+    is_nullable    => 0,
   },
 );
 
@@ -109,6 +115,36 @@ __PACKAGE__->set_primary_key("uid");
 
 =head1 RELATIONS
 
+=head2 pages
+
+Type: has_many
+
+Related object: L<DB::Schema::Result::Page>
+
+=cut
+
+__PACKAGE__->has_many(
+  "pages",
+  "DB::Schema::Result::Page",
+  { "foreign.parent" => "self.uid" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 parent
+
+Type: belongs_to
+
+Related object: L<DB::Schema::Result::Page>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "parent",
+  "DB::Schema::Result::Page",
+  { uid => "parent" },
+  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
+);
+
 =head2 sections
 
 Type: has_many
@@ -125,8 +161,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07035 @ 2015-03-09 20:21:59
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2npRcwDjNXGbpwspeR4j6A
+# Created by DBIx::Class::Schema::Loader v0.07042 @ 2015-04-18 10:22:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:k4MpajQ9VvBbKaRPs4xYjQ
 
 sub getSections {
   my $self = shift;

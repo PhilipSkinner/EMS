@@ -35,10 +35,7 @@
 				</a>
 			</div>
 			<div class="collapse navbar-collapse">
-				<ul class="nav navbar-nav">
-					<li><a href="/main">PDFS</a></li>
-					<li><a href="/splitter">Splitter</a></li>
-				</ul>
+				[% INCLUDE utils/menu.tt2 %]
 			</div>
 		</div>
 	</div>

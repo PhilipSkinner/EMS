@@ -4,13 +4,11 @@ use Moose;
 
 extends 'EMS::Objects::Block';
 
-sub saveContent {
+sub setContent {
   my $self = shift;
   my $content = shift;
   
-  $self->content({
-    text => $content,
-  });
+  $self->content($content);
   
   return 1;
 }

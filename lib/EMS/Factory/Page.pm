@@ -15,30 +15,37 @@ sub loadPage {
     return undef;
   }
   
-  my $page = EMS::Objects::Page->new();
-  $page->name($_page->name());
-  $page->template($_page->template());
-  
-  foreach my $_section (@{$_page->getSections}) {
-    my $section = EMS::Objects::Section->new();
-    $section->name($_section->name());
+  eval {
+    (my $file = $_page->type()) =~ s/\:\:/\//g;
+    require $file . '.pm';
+    my $page = $_page->type()->new();
     
-    foreach my $_block ($_section->blocks) {
-      my $file = $_block->type();
-      $file =~ s/\:\:/\//g;
-      $file .= '.pm';
-      require $file;
-      my $block = $_block->type()->new;
-      
-      $block->content(from_json($_block->content()));
-      
-      $section->addBlock($block);
-    }
+    foreach my $_section (@{$_page->getSections}) {
+      my $section = EMS::Objects::Section->new();
+      $section->name($_section->name());
     
-    $page->addSection($section);
-  }
+      foreach my $_block ($_section->blocks) {
+        my $file = $_block->type();
+        $file =~ s/\:\:/\//g;
+        $file .= '.pm';
+        require $file;
+        my $block = $_block->type()->new;
+      
+        $block->content(from_json($_block->content()));
+      
+        $section->addBlock($block);
+      }
+    
+      $page->addSection($section);
+    }    
   
-  return $page;
+    return $page;
+  } or do {
+    my $error = $@;
+    print STDERR $error;
+    
+    return undef;
+  };
 }
 
 1;

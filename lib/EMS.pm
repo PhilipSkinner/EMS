@@ -57,7 +57,7 @@ __PACKAGE__->config(
             user_class 				=> 'DB::User',
             user_field 				=> 'username',
             password_field 			=> 'password',
-            password_type 			=> 'hashed',
+            password_type 			=> 'clear',
             password_hash_type			=> 'SHA-512',
         }
     },
@@ -69,7 +69,7 @@ __PACKAGE__->config(
         dbic => {
             role_class 				=> 'DB::Role',
             role_field 				=> 'role',
-            role_rel 				=> 'user_role',
+            role_rel 				=> 'user_roles',
             user_role_user_field 		=> 'user',
             user_role_class 			=> 'DB::UserRole',
             user_role_role_field 		=> 'role',
@@ -119,6 +119,29 @@ sub getPage {
     return $self->{pageFactory}->loadPage($self->model('DB::Page')->find({ uid => $id }));
 }
 
+sub getPageSimple {
+    my $self = shift;
+    my $id = shift;
+    
+    return $self->model('DB::Page')->find({ uid => $id });
+}
+
+sub getChildren {
+    my $c = shift;
+    my $id = shift;
+    
+    #just DB entries for linking, no need for display pages
+    my @pages = $c->model('DB::Page')->search({ parent => $id, status => 'active' })->all();
+    
+    return \@pages;
+}
+
+sub homepageTitle {
+    my $c = shift;
+    
+    return $c->model('DB::Page')->find({ uid => 1 })->name();
+}
+
 sub generatePassword {
     my $self = shift;
     my $clear = shift;
@@ -134,6 +157,12 @@ sub generatePassword {
     return $computed;
 }
 
+sub userDetails {
+    my $self = shift;
+  
+    return $self->model('DB::User')->search({ username => $self->user })->first;
+}
+
 sub json {
     my $self = shift;
     
@@ -142,6 +171,13 @@ sub json {
     }
     
     return $self->{json};
+}
+
+sub redirectToLogin {
+    my $c = shift;
+    
+    $c->response->redirect('/admin');
+    return;
 }
 
 1;
