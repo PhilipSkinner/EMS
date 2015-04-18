@@ -1,0 +1,40 @@
+[% WRAPPER admin/wrapper.tt2 %]
+
+<a href="/admin/pages/add" class="btn btn-default">
+	Add page
+</a>
+
+[% 
+	#get our homepage to start the page listing
+	page = c.getPageSimple(1) 
+%]
+
+<ul>
+	[% INCLUDE pageBlock page=page %]
+</ul>
+
+[% BLOCK pageBlock %]
+	<li>
+		<div class="name">
+			<a href="/?id=[% page.uid %]" target="_blank">
+				[% page.name %]
+			</a>
+		</div>
+		<div class="options">
+			<a href="/admin/pages/form/[% page.uid %]">
+				Modify
+			</a>
+		</div>
+		[% IF page.pages %]
+			<ul>
+				[% FOREACH child = page.pages %]
+					[% IF child.uid != page.uid %]
+						[% INCLUDE pageBlock page=child %]
+					[% END %]
+				[% END %]
+			</ul>
+		[% END %]
+	</li>
+[% END %]
+
+[% END %]

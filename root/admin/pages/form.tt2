@@ -1,0 +1,38 @@
+[% WRAPPER admin/wrapper.tt2 %]
+
+<form action="/admin/pages/save/[% page.uid || 'new' %]" enctype="multipart/form-data" method="POST">
+	<input type="hidden" name="descriptor" value="[% descriptor.class %]">
+	<input type="hidden" name="parent" value="[% parent || '1' %]">
+	<input type="hidden" name="status" value="active">
+
+	<div class="form-group">	
+		<label>Page title</label>
+		<input type="text" name="name" value="[% page.name %]">
+	</div>
+
+	[% FOREACH section = model %]
+		<div class="section">			
+			<input type="hidden" name="section_name_[% section.count %]" value="[% section.name || 'Untitled Section' %]">
+		
+			[% FOREACH block = section.blocks %]
+				<div class="block">
+					<div class="form-group">
+						<label>
+							[% block.title %]
+						</label>
+						[% incPath = 'admin/blocks/' _ block.type _ '.tt2' %]
+						[% IF block.type == 'EMS::Objects::Block::Text' %]			
+							[% INCLUDE $incPath %]
+						[% ELSE %]
+							Need to add template for [% block.type %]
+						[% END %]
+					</div>
+				</div>
+			[% END %]
+		</div>
+	[% END %]
+
+	<input type="submit" value="Save Page">
+</form>
+
+[% END %]

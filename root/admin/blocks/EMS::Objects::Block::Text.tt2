@@ -1,0 +1,1 @@
+<textarea name="block_data_[% block.count %]_text">[% block.data.text %]</textarea>

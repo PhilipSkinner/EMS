@@ -1,0 +1,3 @@
+[% WRAPPER admin/wrapper.tt2 %]
+
+[% END %]

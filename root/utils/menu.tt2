@@ -1,0 +1,32 @@
+[% IF !level %]
+	[% level = 1 %]
+[% END %]
+[% IF !parent %]
+	[% parent = 1 %]
+[% END %]
+
+[% children = c.getChildren(parent, level) %]
+
+<div class="menu">
+	<ul>	
+		[% IF includeHomepage %]
+			<a href="/">[% c.homepageTitle() %]</a>
+		[% END %]
+		[% FOREACH child = children %]
+			[% INCLUDE linkBlock page=child %]
+		[% END %]
+	</ul>
+</div>
+
+[% BLOCK linkBlock %]
+	<li>
+		<a href="/?id=[% page.uid %]">[% page.name %]</a>
+		[% IF page.children.0 %]
+			<ul>
+				[% FOREACH child = page.children %]
+					[% INCLUDE linkBlock page=child %]
+				[% END %]
+			</ul>
+		[% END %]
+	</li>
+[% END %]

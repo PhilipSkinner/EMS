@@ -1,0 +1,5 @@
+<div id="adminWrapper" class="container">
+	[% INCLUDE admin/menu.tt2 %]
+
+	[% content %]
+</div>

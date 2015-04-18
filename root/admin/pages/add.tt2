@@ -1,0 +1,14 @@
+[% WRAPPER admin/wrapper.tt2 %]
+	<p>Select a page type</p>
+	
+	[% FOREACH type = descriptors %]
+		<div class="descriptorButton">
+			<a href="/admin/pages/form/new?descriptor=[% type.uid %]">
+				<b>[% type.name %]</b>
+				<p>
+					[% type.description %]
+				</p>
+			</a>
+		</div>
+	[% END %]
+[% END %]
